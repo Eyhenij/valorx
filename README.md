@@ -48,3 +48,56 @@ the child component trigger change detection (!). So, the model in controller ha
 
 ### Conclusion
 The OnPush change detection strategy can significantly improve the performance of Angular applications by reducing the number of change detection cycles and DOM updates.
+
+## Hierarchical Dependency Injection
+Dependency Injection (DI) is a design pattern used to implement IoC (Inversion of Control), allowing a class to receive its dependencies from an external source rather than creating them itself. Angular's DI system is hierarchical, meaning that it allows services to be provided at different levels of the component tree, creating a hierarchy of injectors.
+
+### How Hierarchical Dependency Injection Works
+
+In Angular, services can be provided at various levels:
+
+1. **Root Level:**
+    - Services provided at the root level are singletons and are shared across the entire application. This is achieved by using the `providedIn: 'root'` syntax in the service's `@Injectable` decorator.
+    - Example:
+      ```typescript
+      @Injectable({
+        providedIn: 'root'
+      })
+      export class DataService {
+        // Service implementation
+      }
+      ```
+
+2. **Module Level:**
+    - Services can also be provided in specific Angular modules. This is done by adding the service to the `providers` array of the module's metadata.
+    - Example:
+      ```typescript
+      @NgModule({
+        providers: [DataService]
+      })
+      export class SomeModule { }
+      ```
+
+3. **Component Level:**
+    - Services can be provided at the component level, making them available only to that component and its children. This is done by adding the service to the `providers` array of the component's metadata.
+    - Example:
+      ```typescript
+      @Component({
+        selector: 'app-some-component',
+        providers: [DataService]
+      })
+      export class SomeComponent {
+        constructor(private readonly dataService: DataService) {}
+      }
+      ```
+
+### Benefits of Hierarchical Dependency Injection
+
+1. **Scoped Services:**
+    - By providing services at different levels, Angular allows for scoped services. A service provided at the component level is unique to that component and its children, preventing unintended sharing of state across unrelated parts of the application.
+
+2. **Optimized Resource Usage:**
+    - Services provided at the root level are singletons, ensuring that only one instance of the service exists, which can be more memory-efficient. Component-level services are instantiated only when needed, optimizing resource usage.
+
+3. **Encapsulation:**
+    - Component-level services help encapsulate functionality and state within specific parts of the application, promoting better separation of concerns and modularity.
