@@ -1,0 +1,21 @@
+<h2>Parent Component</h2>
+<p>Object Data: {{ parentObjectData.value }}</p>
+<p>Primitive Data: {{ parentPrimitiveData }}</p>
+<button (click)="updateParentData()">Update Parent Data</button>
+
+<app-child
+    title="Child #1"
+    description="This child component will NOT be updated"
+    [childObjectData]="parentObjectData" />
+
+<app-child
+    title="Child #2"
+    description="This child component will be updated"
+    [childPrimitiveData]="parentPrimitiveData"
+    [childObjectData]="parentObjectData" />
+
+<app-child-with-default-strategy
+    title="Child #3"
+    description="This child component will be updated all the time"
+    [childPrimitiveData]="parentPrimitiveData"
+    [childObjectData]="parentObjectData" />
